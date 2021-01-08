@@ -1,7 +1,7 @@
 {
   "name": "seedpicker",
   "version": "1.0.0",
-  "description": "Contains a GUIDE and a CALCULATOR to help you safely create a private key.",
+  "description": "Contains a CALCULATOR to help you safely generate a 24th seed word.",
   "main": "index.js",
   "dependencies": {
     "@creativebulma/bulma-tooltip": "1.2.0",
@@ -28,11 +28,7 @@
   "scripts": {
     "build": "./browserify.sh",
     "test:unit": "mocha test",
-    "test:cucumber": "cucumber-js --require cucumber.conf.js --require step_definitions --format node_modules/cucumber-pretty",
-    "test": "npm run test:unit",
-    "css-build": "node-sass --omit-source-map-url sass/mystyles.scss css/mystyles.css",
-    "css-watch": "npm run css-build -- --watch",
-    "start": "npm run css-watch"
+    "test": "npm run test:unit"
   },
   "author": "seedpicker@megabit.se",
   "license": "MIT"
