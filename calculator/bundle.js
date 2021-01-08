@@ -45878,37 +45878,53 @@ utils.intFromLE = intFromLE;
 arguments[4][16][0].apply(exports,arguments)
 },{"buffer":"buffer","dup":16}],187:[function(require,module,exports){
 module.exports={
-  "name": "elliptic",
-  "version": "6.5.3",
-  "description": "EC cryptography",
-  "main": "lib/elliptic.js",
-  "files": [
-    "lib"
+  "_args": [
+    [
+      "elliptic@6.5.3",
+      "/home/jimbo/checkout/seedpicker"
+    ]
   ],
-  "scripts": {
-    "jscs": "jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js",
-    "jshint": "jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js",
-    "lint": "npm run jscs && npm run jshint",
-    "unit": "istanbul test _mocha --reporter=spec test/index.js",
-    "test": "npm run lint && npm run unit",
-    "version": "grunt dist && git add dist/"
+  "_from": "elliptic@6.5.3",
+  "_id": "elliptic@6.5.3",
+  "_inBundle": false,
+  "_integrity": "sha512-IMqzv5wNQf+E6aHeIqATs0tOLeOTwj1QKbRcS3jBbYkl5oLAserA8yJTT7/VyHUYG91PRmPyeQDObKLPpeS4dw==",
+  "_location": "/elliptic",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "elliptic@6.5.3",
+    "name": "elliptic",
+    "escapedName": "elliptic",
+    "rawSpec": "6.5.3",
+    "saveSpec": null,
+    "fetchSpec": "6.5.3"
   },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:indutny/elliptic"
-  },
-  "keywords": [
-    "EC",
-    "Elliptic",
-    "curve",
-    "Cryptography"
+  "_requiredBy": [
+    "/browserify-sign",
+    "/create-ecdh",
+    "/tiny-secp256k1"
   ],
-  "author": "Fedor Indutny <fedor@indutny.com>",
-  "license": "MIT",
+  "_resolved": "https://registry.npmjs.org/elliptic/-/elliptic-6.5.3.tgz",
+  "_spec": "6.5.3",
+  "_where": "/home/jimbo/checkout/seedpicker",
+  "author": {
+    "name": "Fedor Indutny",
+    "email": "fedor@indutny.com"
+  },
   "bugs": {
     "url": "https://github.com/indutny/elliptic/issues"
   },
-  "homepage": "https://github.com/indutny/elliptic",
+  "dependencies": {
+    "bn.js": "^4.4.0",
+    "brorand": "^1.0.1",
+    "hash.js": "^1.0.0",
+    "hmac-drbg": "^1.0.0",
+    "inherits": "^2.0.1",
+    "minimalistic-assert": "^1.0.0",
+    "minimalistic-crypto-utils": "^1.0.0"
+  },
+  "description": "EC cryptography",
   "devDependencies": {
     "brfs": "^1.4.3",
     "coveralls": "^3.0.8",
@@ -45925,15 +45941,32 @@ module.exports={
     "jshint": "^2.10.3",
     "mocha": "^6.2.2"
   },
-  "dependencies": {
-    "bn.js": "^4.4.0",
-    "brorand": "^1.0.1",
-    "hash.js": "^1.0.0",
-    "hmac-drbg": "^1.0.0",
-    "inherits": "^2.0.1",
-    "minimalistic-assert": "^1.0.0",
-    "minimalistic-crypto-utils": "^1.0.0"
-  }
+  "files": [
+    "lib"
+  ],
+  "homepage": "https://github.com/indutny/elliptic",
+  "keywords": [
+    "EC",
+    "Elliptic",
+    "curve",
+    "Cryptography"
+  ],
+  "license": "MIT",
+  "main": "lib/elliptic.js",
+  "name": "elliptic",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/indutny/elliptic.git"
+  },
+  "scripts": {
+    "jscs": "jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js",
+    "jshint": "jscs benchmarks/*.js lib/*.js lib/**/*.js lib/**/**/*.js test/index.js",
+    "lint": "npm run jscs && npm run jshint",
+    "test": "npm run lint && npm run unit",
+    "unit": "istanbul test _mocha --reporter=spec test/index.js",
+    "version": "grunt dist && git add dist/"
+  },
+  "version": "6.5.3"
 }
 
 },{}],188:[function(require,module,exports){
@@ -54430,147 +54463,7 @@ function numberIsNaN (obj) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"base64-js":18,"buffer":"buffer","ieee754":219}],"dice":[function(require,module,exports){
-const wordlist = require('wordlist')
-
-const init = function () {
-    createTable([]);
-    $('input[type="number"]').keyup(dieRoll)
-    clearInputs();
-    enableFieldOne();
-}
-
-const createTable = function (dieValues) {
-    const rows =
-        wordlist.filter(dieValues)
-            .map(word => {
-                let row = `         <tr id="word${word[12]}">\n`
-                for (let i = 0; i < 13; i++) {
-                    row += `             <td>${word[i]}</td>\n`
-                }
-                return row + "        </tr>\n";
-            })
-            .join("\n")
-    const $wordTable = $("#word_table");
-    $wordTable.empty()
-    $wordTable.append(rows)
-}
-
-function enableCopyPhrase() {
-
-}
-
-const addWordToPhrase = function () {
-    const noOfFilteredWords = $("#word_table > tr").length
-    if (noOfFilteredWords > 1) {
-        return;
-    }
-    const word = $("#word_table > tr > td:nth-of-type(12)").text()
-    const $phrase = $("#phrase");
-    const phrase = $phrase.text();
-    let separator = phrase === "" ? "" : " ";
-    const updatedPhrase = phrase + separator + word;
-    $phrase.text(updatedPhrase)
-    updateHelperText($phrase.text())
-    if (updatedPhrase.split(" ").length === 23) {
-        console.log("We're done!");
-        clearInputs()
-        enableCopyPhrase()
-    } else {
-        clearInputs()
-        enableFieldOne()
-    }
-};
-
-const updateHelperText = function (currentPhrase) {
-    const words = noOfWordsRandomized(currentPhrase);
-    const msg = `${words} word${words > 1 ? "s" : ""} of 23. ${23 - words} more to go.`
-    $("#phrase_helper").text(msg)
-}
-
-function noOfWordsRandomized(currentPhrase) {
-    return currentPhrase.trim().split(" ").length;
-}
-
-const clearInputs = function () {
-    const $inputs = $('input[type="number"]')
-    $inputs.val("")
-    $inputs.prop('disabled', true)
-    const $addWord = $("#add_word");
-    $addWord.prop('disabled', true)
-    $addWord.off("click", addWordToPhrase)
-}
-
-const enableFieldOne = function () {
-    const $d1 = $("#d1");
-    $d1.prop('disabled', false)
-    $d1.focus()
-}
-
-const isValid = function (dieRollInput) {
-    const value = dieRollInput.val();
-    dieRollInput.addClass('is-danger')
-    if (typeof value === "undefined" || value.length === 0) {
-        dieRollInput.val("")
-        return false
-    }
-    const intValue = parseInt(value)
-    if (isNaN(intValue)) {
-        dieRollInput.val("")
-        return false
-    }
-    if (intValue < 1 || intValue > 6) {
-        dieRollInput.val("")
-        return false
-    }
-    dieRollInput.removeClass('is-danger')
-    return true
-}
-
-const dieRoll = function () {
-    const $input = $(this);
-    if (!isValid($input)) {
-        return;
-    }
-    setTimeout(filterWords, 50);
-
-    const nextId = parseInt($input.attr("id").substring(1)) + 1;
-    if (nextId === 12) {
-        enableAddWordButton();
-    } else {
-        moveFocusToNextInput(nextId);
-    }
-    $("#phrase_error").text("")
-}
-
-const enableAddWordButton = function () {
-    const $addWord = $("#add_word");
-    $addWord.prop('disabled', false)
-    $addWord.focus()
-    $addWord.on("click", addWordToPhrase)
-};
-
-const moveFocusToNextInput = function (nextId) {
-    const $nextInput = $(`#d${nextId}`);
-    $nextInput.prop('disabled', false)
-    $nextInput.focus()
-};
-
-const filterWords = function () {
-    const values =
-        $('input[type="number"]')
-            .map(function () {
-                return this.value
-            })
-            .get()
-    createTable(values)
-}
-
-module.exports = {
-    init: init
-}
-
-},{"wordlist":"wordlist"}],"jquery":[function(require,module,exports){
+},{"base64-js":18,"buffer":"buffer","ieee754":219}],"jquery":[function(require,module,exports){
 /*!
  * jQuery JavaScript Library v3.5.1
  * https://jquery.com/
@@ -65526,7 +65419,7 @@ function rootFingerPrintFromMnemonic(mnemonic) {
     return fingerprint;
 }
 
-function validate(suppliedSeedPhrase) {
+function validate(suppliedSeedPhrase, allow24thWord) {
     let wordCount = 0
     const trimmedWords = suppliedSeedPhrase
         .trim()
@@ -65538,7 +65431,7 @@ function validate(suppliedSeedPhrase) {
     if (trimmedWords.length > 0) {
         wordCount = trimmedWords.length
     }
-    if (wordCount !== 23) {
+    if (wordCount !== 23 && !(allow24thWord && wordCount === 24)) {
         const msg = "Please enter 23 words. (You entered " + wordCount + ")"
         return validationReply(msg)
     }
@@ -65560,12 +65453,22 @@ function validationReply(errorMsg, words) {
     return {
         valid: errorMsg === "",
         errorMessage: errorMsg,
-        cleanedUpPhrase: words
+        cleanedUpPhrase: words && words.split(" ")
     }
 }
 
 function firstChecksumWordAlphabetically(suppliedSeedPhrase) {
-    return allChecksumWords(suppliedSeedPhrase)[0]
+    const dictionary = bip39.wordlists[bip39.getDefaultWordlist()]
+    const bits = suppliedSeedPhrase
+        .map(word => dictionary.indexOf(word).toString(2).padStart(11, 0))
+        .join("")
+        .slice(0, 256)
+        .padEnd(256, "0")
+    const hex = bits.match(/..../g)
+        .map(b => parseInt(b, 2).toString(16))
+        .join("")
+    const mnemonic = bip39.entropyToMnemonic(hex)
+    return mnemonic.split(" ")[23]
 }
 
 function allChecksumWords(suppliedSeedPhrase) {
@@ -65657,7 +65560,6 @@ let network = MAINNET;
 
 function init() {
     setNetworkFromUrlParams()
-    ga()
     let actualTitle = title
     if (isTestnet()) {
         actualTitle = title + " - TESTNET"
@@ -65737,7 +65639,9 @@ function scrollTo(selector) {
 
 function submitButtonAction(callback) {
     const phraseField = $("#seedphrase_input");
-    const validation = logic.validate(phraseField.val())
+    const allow24thWord = $("#allow_24th_word_input");
+    const validation =
+        logic.validate(phraseField.val(), allow24thWord.is(':checked'));
     const $seedErrorMsg = $("#seed_error_msg");
     $("#results").addClass('is-hidden');
     hideAdvanced()
@@ -65748,14 +65652,14 @@ function submitButtonAction(callback) {
         return
     }
     $seedErrorMsg.addClass('is-hidden');
-    phraseField.text(validation.cleanedUpPhrase)
+    phraseField.text(validation.cleanedUpPhrase.join(" "))
 
     const $seedButton = $("#seed-submit");
     $seedButton.addClass("is-loading")
 
     setTimeout(() => {
         const checksumWord = logic.firstChecksumWordAlphabetically(validation.cleanedUpPhrase)
-        const mnemonic = validation.cleanedUpPhrase + " " + checksumWord
+        const mnemonic = [...validation.cleanedUpPhrase.slice(0, 23), checksumWord].join(" ")
         const pubKeys = logic.keysFromMnemonic(mnemonic, network);
         const rootFingerprint = logic.rootFingerPrintFromMnemonic(mnemonic)
         const fileExportData = logic.assembleExportFileData(rootFingerprint, pubKeys)
@@ -65846,17 +65750,6 @@ function getVersionBytes(prefix) {
     return xpubformats.xpubPrefixes[prefix];
 }
 
-function ga() {
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-        dataLayer.push(arguments);
-    }
-
-    gtag('js', new Date());
-    gtag('config', 'UA-115028432-1');
-}
-
 function exportFileButtonAction() {
     let data = $('#export_file_button').data("fileExportData");
     return new Promise(() => {
@@ -65878,6 +65771,7 @@ function exportFileButtonAction() {
 module.exports = {
     init: init
 }
+
 },{"./logic.js":"logic","./xpubformats.js":1,"bip39":"bip39","kjua":222}],"wordlist":[function(require,module,exports){
 const wordlist = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, "abandon", 1],
