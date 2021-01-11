@@ -26,5 +26,18 @@
  * @fileoverview Entry point for building the SeedPicker offline web app.
  */
 
-console.log('Hello world.');
+// Node modules.
+import * as path from 'path';
+import * as fs from 'fs-extra';
+
+// NPM modules.
+import {JSDOM} from 'jsdom';
+
+async function main() {
+  console.log('Hello world.');
+}
+
+main().catch(err => {
+  throw err;
+});
 
