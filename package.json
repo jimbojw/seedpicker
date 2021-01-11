@@ -1,0 +1,22 @@
+{
+  "name": "seedpicker",
+  "version": "1.0.0",
+  "description": "SeedPicker is an offline tool for generating the 24th word of a Bitcoin BIP-39 seed phrase.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jimbojw/seedpicker.git"
+  },
+  "contributors": [
+    "seedpicker@megabit.se",
+    "jimbo"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jimbojw/seedpicker/issues"
+  },
+  "homepage": "https://github.com/jimbojw/seedpicker#readme"
+}
