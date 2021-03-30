@@ -34,7 +34,56 @@ import * as fs from 'fs-extra';
 import {JSDOM} from 'jsdom';
 
 async function main() {
-  console.log('Hello world.');
+  const calculatorDir = path.join(__dirname, '..', 'last-word', 'calculator');
+
+  // Read last-word.html input file and create DOM for manipulating.
+  const lastWordInputFile = path.join(calculatorDir, 'last-word.html');
+  console.log(`Opening input file: ${lastWordInputFile}`);
+  const lastWordInputHtml = await fs.readFile(lastWordInputFile, 'utf-8');
+  const dom = new JSDOM(lastWordInputHtml);
+  const doc = dom.window.document;
+
+  // Replace bundle.js script element with inline code.
+  const script = doc.querySelector('script[src="bundle.js"]');
+  if (!script) {
+    throw new Error('Could not find bundle script element.');
+  }
+  const bundleInputFile = path.join(calculatorDir, 'bundle.js');
+  console.log(`Loading bundle file: ${bundleInputFile}`);
+  const bundleInputJs = await fs.readFile(bundleInputFile, 'utf-8');
+  script.removeAttribute('src');
+  script.innerHTML =
+    `<!--//--><![CDATA[//><!--\n${bundleInputJs}\n//--><!]]>`;
+
+  // Find and replace stylesheets with inline content.
+  const cssDir = path.join(__dirname, '..', 'last-word', 'css');
+  const linkNodes = doc.querySelectorAll('link[rel="stylesheet"]');
+  const styles = [];
+  for (let i = 0; i < linkNodes.length; i++) {
+    const linkNode = linkNodes[i];
+    const href = linkNode.getAttribute('href');
+    const cssFile = path.join(calculatorDir, href);
+    if (path.relative(cssDir, cssFile).startsWith('..')) {
+      throw new Error(`CSS file is outside of the css/ directory: ${cssFile}`);
+    }
+    if (!await fs.pathExists(cssFile)) {
+      throw new Error(`CSS file does not exist: ${cssFile}`);
+    }
+    console.log(`Reading css file: ${cssFile}`);
+    const cssContent = await fs.readFile(cssFile, 'utf-8');
+    styles.push(cssContent);
+    linkNode.parentNode.removeChild(linkNode);
+  }
+  console.log(`Inlining styles (${styles.length}).`);
+  const styleNode = doc.createElement('style');
+  styleNode.innerHTML = styles.join('\n');
+  doc.head.appendChild(styleNode);
+
+  // Create dist/ directory and output final HTML.
+  const distDir = path.join(__dirname, '..', 'dist');
+  const lastWordOutputFile = path.join(distDir, 'last-word.html');
+  console.log(`Writing output file ${lastWordOutputFile}`);
+  await fs.outputFile(lastWordOutputFile, dom.serialize());
 }
 
 main().catch(err => {
